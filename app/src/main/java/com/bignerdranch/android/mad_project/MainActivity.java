@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.bignerdranch.android.mad_project.joinInstaFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fm;
