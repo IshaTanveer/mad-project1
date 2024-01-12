@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".joinInstaFragment"
+    android:orientation="vertical"
+    android:padding="40dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/join_instagram_to_post"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="220dp"
+        android:paddingBottom="220dp"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/continue_with_google"
+        android:id="@+id/btn_continueWithGoogle"
+        android:textStyle="bold"
+        android:padding="15dp"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/round_corners"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_createAccount"
+        android:textStyle="bold"
+        android:text="@string/create_acoount"
+        android:padding="15dp"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="@drawable/round_corners"
+        android:layout_marginBottom="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/terms"
+        android:textColor="@color/grey"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_haveAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/have_an_account"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/grey"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_login"
+            android:text="@string/login"
+            android:layout_alignParentBottom="true"
+            android:paddingStart="125dp"
+            android:textColor="@color/grey"/>
+    </RelativeLayout>
+
+</LinearLayout>

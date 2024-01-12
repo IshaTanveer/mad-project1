@@ -6,12 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello World!"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:background="#FFA8A8"/>
+        android:id="@+id/fragments"
+        />
 
 </LinearLayout>
