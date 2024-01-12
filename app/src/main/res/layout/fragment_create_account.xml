@@ -29,10 +29,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:hint="@string/name"
-            android:id="@+id/et_signupName"
-            ></com.google.android.material.textfield.TextInputEditText>
+            android:id="@+id/et_signupName"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -42,10 +41,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:hint="@string/email"
-            android:id="@+id/et_signupEmail"
-            ></com.google.android.material.textfield.TextInputEditText>
+            android:id="@+id/et_signupEmail"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -55,10 +53,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:hint="@string/date_of_birth"
-            android:id="@+id/et_signupDob"
-            ></com.google.android.material.textfield.TextInputEditText>
+            android:id="@+id/et_signupDob"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -68,10 +65,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:hint="@string/password"
-            android:id="@+id/et_signupPassword"
-            ></com.google.android.material.textfield.TextInputEditText>
+            android:id="@+id/et_signupPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
@@ -84,6 +80,5 @@
        android:padding="15dp"
         android:textSize="15sp"
         android:text="@string/sign_up"
-        android:id="@+id/btn_signup"
-        ></androidx.appcompat.widget.AppCompatButton>
+        android:id="@+id/btn_signup"/>
 </LinearLayout>
