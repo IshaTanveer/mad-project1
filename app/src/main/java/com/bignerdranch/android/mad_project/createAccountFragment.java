@@ -39,12 +39,14 @@ public class createAccountFragment extends Fragment {
     private UserAccount userAccount = new UserAccount();
     private int year, month, day;
     private DatePickerDialog.OnDateSetListener listener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_account, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -67,33 +69,43 @@ public class createAccountFragment extends Fragment {
         listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                userAccount.setDob(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(dayOfMonth));
+                userAccount.setDob(String.valueOf(year) + "-" + String.valueOf(month + 1) + "-" + String.valueOf(dayOfMonth));
                 et_signupDob.setText(userAccount.getDob());
             }
         };
     }
+
     private void getUserPassword() {
         et_signupPassword.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 userAccount.setPassword(Objects.requireNonNull(et_signupPassword.getText()).toString().trim());
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
+
     private void getUserEmail() {
         et_signupEmail.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 userAccount.setEmail(Objects.requireNonNull(et_signupEmail.getText()).toString().trim());
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
@@ -101,12 +113,18 @@ public class createAccountFragment extends Fragment {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userAccount.getName() != null && userAccount.getEmail() != null && userAccount.getPassword() != null && userAccount.getDob() != null){
+                if(userAccount.getName() == null)
+                    Toast.makeText(getActivity(), "Enter Name", Toast.LENGTH_SHORT).show();
+                if(userAccount.getEmail() == null)
+                    Toast.makeText(getActivity(), "Enter Email", Toast.LENGTH_SHORT).show();
+                if(userAccount.getDob() == null)
+                    Toast.makeText(getActivity(), "Enter DOB", Toast.LENGTH_SHORT).show();
+                if(userAccount.getPassword() == null)
+                    Toast.makeText(getActivity(), "Enter Password", Toast.LENGTH_SHORT).show();
+                if (userAccount.getName() != null && userAccount.getEmail() != null && userAccount.getPassword() != null && userAccount.getDob() != null) {
                     Toast.makeText(getActivity(), "true", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    Toast.makeText(getActivity(), "false", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
     }
@@ -114,18 +132,24 @@ public class createAccountFragment extends Fragment {
     private void getUserName() {
         et_signupName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                 userAccount.setName(Objects.requireNonNull(et_signupName.getText()).toString().trim());
+                userAccount.setName(Objects.requireNonNull(et_signupName.getText()).toString().trim());
+
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
+
     }
 
 
-    private void initializeIds(View view){
+    private void initializeIds(View view) {
         et_signupName = view.findViewById(R.id.et_signupName);
         et_signupEmail = view.findViewById(R.id.et_signupEmail);
         et_signupDob = view.findViewById(R.id.et_signupDob);
