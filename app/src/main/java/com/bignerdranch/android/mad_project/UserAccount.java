@@ -4,20 +4,19 @@ import java.util.Date;
 
 public class UserAccount {
 
- private String name, password, email;
- private Date dob;
+ private String name, password, email, dob;
 
     public UserAccount() {
     }
 
-    public UserAccount(String name, String password, String email, Date dob) {
+    public UserAccount(String name, String password, String email, String dob) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.dob = dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -46,7 +45,7 @@ public class UserAccount {
         return email;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 }

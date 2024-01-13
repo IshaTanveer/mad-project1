@@ -58,33 +58,22 @@ public class createAccountFragment extends Fragment {
     }
 
     private void datePickerDialog() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
         et_signupDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dateDialog = new DatePickerDialog(requireActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, listener, 2023, 12, 30);
+                DatePickerDialog dateDialog = new DatePickerDialog(requireActivity(), android.R.style.Theme_Material_Dialog_MinWidth, listener, 2023, 12, 30);
                 dateDialog.show();
             }
         });
         listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                getDate();
+                String date = String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(dayOfMonth);
+                userAccount.setDob(date);
             }
         };
     }
 
-    private void getDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            userAccount.setDob(dateFormat.parse(String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day)));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     private void getUserDob() {
@@ -135,7 +124,7 @@ public class createAccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (getActivity() != null) {
-                    Toast.makeText(getActivity(), userAccount.getDob().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), userAccount.getDob(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
