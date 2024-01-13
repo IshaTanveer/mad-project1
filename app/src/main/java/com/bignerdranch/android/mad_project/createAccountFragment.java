@@ -1,5 +1,7 @@
 package com.bignerdranch.android.mad_project;
 
+import static androidx.core.content.res.ResourcesCompat.getColor;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -50,47 +52,26 @@ public class createAccountFragment extends Fragment {
         getUserName();
         getUserEmail();
         getUserPassword();
-        //getUserDob();
-        setUpClickListener();
         datePickerDialog();
-        //alertDialog();
-
+        setUpClickListener();
     }
 
     private void datePickerDialog() {
         et_signupDob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dateDialog = new DatePickerDialog(requireActivity(), android.R.style.Theme_Material_Dialog_MinWidth, listener, 2023, 12, 30);
+                DatePickerDialog dateDialog = new DatePickerDialog(requireActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, listener, 2023, 12, 30);
                 dateDialog.show();
             }
         });
         listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(dayOfMonth);
-                userAccount.setDob(date);
+                userAccount.setDob(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(dayOfMonth));
+                et_signupDob.setText(userAccount.getDob());
             }
         };
     }
-
-
-
-    private void getUserDob() {
-        et_signupDob.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
     private void getUserPassword() {
         et_signupPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,12 +81,9 @@ public class createAccountFragment extends Fragment {
                 userAccount.setPassword(Objects.requireNonNull(et_signupPassword.getText()).toString().trim());
             }
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {}
         });
     }
-
     private void getUserEmail() {
         et_signupEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -123,8 +101,11 @@ public class createAccountFragment extends Fragment {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getActivity() != null) {
-                    Toast.makeText(getActivity(), userAccount.getDob(), Toast.LENGTH_SHORT).show();
+                if (userAccount.getName() != null && userAccount.getEmail() != null && userAccount.getPassword() != null && userAccount.getDob() != null){
+                    Toast.makeText(getActivity(), "true", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getActivity(), "false", Toast.LENGTH_SHORT).show();
                 }
             }
         });
