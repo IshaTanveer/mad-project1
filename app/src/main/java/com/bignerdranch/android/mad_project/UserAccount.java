@@ -17,6 +17,10 @@ public class UserAccount {
         this.dob = dob;
     }
 
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
     public String getName() {
         return name;
     }
