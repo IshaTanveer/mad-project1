@@ -1,14 +1,6 @@
 package com.bignerdranch.android.mad_project;
-
-import static androidx.core.content.res.ResourcesCompat.getColor;
-
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,20 +9,18 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class createAccountFragment extends Fragment {
 
@@ -115,18 +105,30 @@ public class createAccountFragment extends Fragment {
             public void onClick(View v) {
                 if(userAccount.getName() == null)
                     Toast.makeText(getActivity(), "Enter Name", Toast.LENGTH_SHORT).show();
-                if(userAccount.getEmail() == null)
+                else if(userAccount.getEmail() == null)
                     Toast.makeText(getActivity(), "Enter Email", Toast.LENGTH_SHORT).show();
-                if(userAccount.getDob() == null)
+                else if(!isValidEmail(userAccount.getEmail()))
+                    Toast.makeText(getActivity(), "not a valid mail", Toast.LENGTH_SHORT).show();
+                else if(userAccount.getDob() == null)
                     Toast.makeText(getActivity(), "Enter DOB", Toast.LENGTH_SHORT).show();
-                if(userAccount.getPassword() == null)
+                else if(userAccount.getPassword() == null)
                     Toast.makeText(getActivity(), "Enter Password", Toast.LENGTH_SHORT).show();
-                if (userAccount.getName() != null && userAccount.getEmail() != null && userAccount.getPassword() != null && userAccount.getDob() != null) {
+                else if(userAccount.getPassword().length() < 8)
+                    Toast.makeText(getActivity(), "password must have 8 characters", Toast.LENGTH_SHORT).show();
+                else if (userAccount.getName() != null && userAccount.getEmail() != null && userAccount.getPassword() != null && userAccount.getDob() != null) {
                     Toast.makeText(getActivity(), "true", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
+    }
+    public static boolean isValidEmail(CharSequence target) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "gmail.com";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        return pat.matcher(target).matches();
     }
 
     private void getUserName() {
