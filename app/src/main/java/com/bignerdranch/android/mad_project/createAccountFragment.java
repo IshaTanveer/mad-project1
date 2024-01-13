@@ -9,9 +9,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,9 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,7 @@ public class createAccountFragment extends Fragment {
     private UserAccount userAccount = new UserAccount();
     private int year, month, day;
     private DatePickerDialog.OnDateSetListener listener;
-
+    private DatabaseReference usersDbRef;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class createAccountFragment extends Fragment {
         getUserPassword();
         datePickerDialog();
         setUpClickListener();
+
     }
 
     private void datePickerDialog() {
@@ -116,6 +118,8 @@ public class createAccountFragment extends Fragment {
                 else if(userAccount.getPassword().length() < 8)
                     Toast.makeText(getActivity(), "password must have 8 characters", Toast.LENGTH_SHORT).show();
                 else if (userAccount.getName() != null && userAccount.getEmail() != null && userAccount.getPassword() != null && userAccount.getDob() != null) {
+                    usersDbRef = FirebaseDatabase.getInstance().getReference().child("userAccount");
+                    usersDbRef.push().setValue(userAccount);
                     Toast.makeText(getActivity(), "true", Toast.LENGTH_SHORT).show();
                 }
 
