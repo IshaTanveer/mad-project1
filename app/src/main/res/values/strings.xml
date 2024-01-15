@@ -16,4 +16,14 @@
     <string name="sign_up">Sign up</string>
     <string name="login_btn">Login</string>
     <string name="login_account">Login to Account</string>
+    <string name="profile">profile</string>
+    <string name="reels">reels</string>
+    <string name="addpost">addPost</string>
+    <string name="home">home</string>
+    <string name="search">search</string>
+    <string name="Profile">Profile</string>
+    <string name="Reels">Reels</string>
+    <string name="Post">Post</string>
+    <string name="Search">Search</string>
+    <string name="Home">Home</string>
 </resources>
