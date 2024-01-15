@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 public class joinInstaFragment extends Fragment {
     private AppCompatButton btn_createAccount;
-
+    private TextView tv_login;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -24,21 +26,28 @@ public class joinInstaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init(view);
         addCreateAccountFrag();
+
     }
 
     private void addCreateAccountFrag() {
         btn_createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragments, new createAccountFragment(), "create Account")
-                        .addToBackStack(null)
-                        .commit();
+                Fragment createAccountFragment = new createAccountFragment();
+                addFragment(createAccountFragment);
             }
         });
     }
+
+    private void addFragment(Fragment fragment) {
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragments, fragment , "create Account")
+                .addToBackStack(null)
+                .commit();
+    }
     public void init(View view){
         btn_createAccount = view.findViewById(R.id.btn_createAccount);
+        tv_login = view.findViewById(R.id.tv_login);
     }
 
 }

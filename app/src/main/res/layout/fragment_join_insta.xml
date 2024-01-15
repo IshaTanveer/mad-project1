@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_login"
-            android:text="@string/login"
+            android:text="@string/login_text"
             android:layout_alignParentBottom="true"
             android:paddingStart="125dp"
             android:textColor="@color/grey"/>
