@@ -1,4 +1,6 @@
 package com.bignerdranch.android.mad_project;
+import static android.app.ProgressDialog.show;
+
 import android.app.DatePickerDialog;
 
 import android.os.Bundle;
@@ -16,7 +18,12 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -118,14 +125,27 @@ public class createAccountFragment extends Fragment {
                 else if(userAccount.getPassword().length() < 8)
                     Toast.makeText(getActivity(), "password must have 8 characters", Toast.LENGTH_SHORT).show();
                 else if (userAccount.getName() != null && userAccount.getEmail() != null && userAccount.getPassword() != null && userAccount.getDob() != null) {
-                    usersDbRef = FirebaseDatabase.getInstance().getReference().child("userAccount");
-                    usersDbRef.push().setValue(userAccount);
-                    Toast.makeText(getActivity(), "true", Toast.LENGTH_SHORT).show();
+                    createAccount();
                 }
 
             }
         });
     }
+
+    private void createAccount() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.createUserWithEmailAndPassword(userAccount.getEmail(), userAccount.getPassword())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful())
+                            Toast.makeText(getActivity(), "Account created.",Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getActivity(), "Authentication failed.",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     public static boolean isValidEmail(CharSequence target) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
