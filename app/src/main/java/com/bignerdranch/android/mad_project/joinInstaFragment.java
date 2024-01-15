@@ -26,7 +26,7 @@ public class joinInstaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init(view);
         addCreateAccountFrag();
-
+         addloginFrag();
     }
 
     private void addCreateAccountFrag() {
@@ -35,6 +35,15 @@ public class joinInstaFragment extends Fragment {
             public void onClick(View v) {
                 Fragment createAccountFragment = new createAccountFragment();
                 addFragment(createAccountFragment);
+            }
+        });
+    }
+    private void addloginFrag() {
+        tv_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment loginFragment = new loginFragment();
+                addFragment(loginFragment);
             }
         });
     }
