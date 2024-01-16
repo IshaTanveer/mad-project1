@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.android.mad_project.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -47,7 +46,7 @@ public class mainFragment extends Fragment {
                     replaceFragment(new profileFragment());
                 else if (id == R.id.icon_home)
                     addFragment(new homeFragment());
-                return false;
+                return true;
             }
         });
 
