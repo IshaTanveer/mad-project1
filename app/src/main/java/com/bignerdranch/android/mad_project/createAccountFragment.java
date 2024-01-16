@@ -136,12 +136,23 @@ public class createAccountFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful())
-                            Toast.makeText(getActivity(), "Account created.",Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(getActivity(), "Authentication failed.",Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Account created.", Toast.LENGTH_SHORT).show();
+                            Fragment loginFragment = new loginFragment();
+                           addFragment(loginFragment);
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+    }
+
+    private void addFragment(Fragment fragment) {
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragments, fragment , "create Account")
+                .addToBackStack(null)
+                .commit();
     }
 
     public static boolean isValidEmail(CharSequence target) {

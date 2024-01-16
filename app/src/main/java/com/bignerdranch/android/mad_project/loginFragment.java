@@ -57,15 +57,11 @@ public class loginFragment extends Fragment {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if(userAccount.getEmail() == null)
+                if(userAccount.getEmail() == null)
                     Toast.makeText(getActivity(), "Enter Email", Toast.LENGTH_SHORT).show();
-                else if(!isValidEmail(userAccount.getEmail()))
-                    Toast.makeText(getActivity(), "not a valid mail", Toast.LENGTH_SHORT).show();
                 else if(userAccount.getPassword() == null)
                     Toast.makeText(getActivity(), "Enter Password", Toast.LENGTH_SHORT).show();
-                else if(userAccount.getPassword().length() < 8)
-                    Toast.makeText(getActivity(), "password must have 8 characters", Toast.LENGTH_SHORT).show();
-                else if (userAccount.getEmail() != null && userAccount.getPassword() != null ) { */
+                else if (userAccount.getEmail() != null && userAccount.getPassword() != null ) {
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     mAuth.signInWithEmailAndPassword(userAccount.getEmail(), userAccount.getPassword())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -74,23 +70,27 @@ public class loginFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         Toast.makeText(getActivity(), "logged in", Toast.LENGTH_SHORT).show();
+                                       // switchToMainFrag();
                                     } else {
                                         Toast.makeText(getActivity(), "wrong email or password.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-               // }
+                }
 
+            }
+
+            private void switchToMainFrag() {
+                Fragment mainFragment = new mainFragment();
+                addFragment(mainFragment);
             }
         });
     }
-    /*public static boolean isValidEmail(CharSequence target) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "gmail.com";
-        Pattern pat = Pattern.compile(emailRegex);
-        return pat.matcher(target).matches();
-    } */
+    private void addFragment(Fragment fragment) {
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragments, fragment , "main Fragment")
+                .commit();
+    }
     private void getUserPassword() {
         et_loginPassword.addTextChangedListener(new TextWatcher() {
             @Override
