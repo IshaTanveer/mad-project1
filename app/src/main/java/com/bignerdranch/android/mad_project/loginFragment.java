@@ -70,7 +70,8 @@ public class loginFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         Toast.makeText(getActivity(), "logged in", Toast.LENGTH_SHORT).show();
-                                       // switchToMainFrag();
+                                        Fragment mainFragment = new mainFragment();
+                                        addFragment(mainFragment);
                                     } else {
                                         Toast.makeText(getActivity(), "wrong email or password.", Toast.LENGTH_SHORT).show();
                                     }
@@ -80,10 +81,6 @@ public class loginFragment extends Fragment {
 
             }
 
-            private void switchToMainFrag() {
-                Fragment mainFragment = new mainFragment();
-                addFragment(mainFragment);
-            }
         });
     }
     private void addFragment(Fragment fragment) {
