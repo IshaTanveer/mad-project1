@@ -14,11 +14,11 @@
         android:id="@+id/icon_addPost"
         />
     <item android:title="@string/Reels"
-        android:icon="@drawable/home"
+        android:icon="@drawable/reels"
         android:id="@+id/icon_reels"
         />
     <item android:title="@string/Profile"
-        android:icon="@drawable/home"
+        android:icon="@drawable/profile"
         android:id="@+id/icon_profile"
         />
 </menu>

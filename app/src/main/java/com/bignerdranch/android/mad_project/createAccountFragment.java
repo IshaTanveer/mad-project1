@@ -149,9 +149,9 @@ public class createAccountFragment extends Fragment {
     }
 
     private void addFragment(Fragment fragment) {
+        getParentFragmentManager().popBackStack("createAccount", 0);
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragments, fragment , "create Account")
-                .addToBackStack(null)
                 .commit();
     }
 

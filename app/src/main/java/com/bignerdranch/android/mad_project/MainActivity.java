@@ -28,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             mainFragment fragment = new mainFragment();
-            ft.add(R.id.fragments, fragment, "instagram");
+            ft.add(R.id.fragments, fragment, "joinInsta");
             //fm.popBackStack("instagram", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             ft.commit();
         }
         else{
             joinInstaFragment fragment = new joinInstaFragment();
-            ft.add(R.id.fragments, fragment, "instagram");
+            ft.add(R.id.fragments, fragment, "createAccount");
             fm.popBackStack("instagram", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             ft.commit();
         }

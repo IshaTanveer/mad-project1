@@ -30,7 +30,7 @@ public class mainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bnView = view.findViewById(R.id.bottomNavigation);
-        bnView.setSelectedItemId(R.id.icon_home);
+       // bnView.setSelectedItemId(R.id.icon_home);
         addFragment(new homeFragment());
         bnView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

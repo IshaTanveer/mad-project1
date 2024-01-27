@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +33,8 @@ public class loginFragment extends Fragment {
     private TextInputEditText et_loginEmail, et_loginPassword;
     private AppCompatButton btn_login;
     private UserAccount userAccount = new UserAccount();
+    private FragmentManager fm;
+    private FragmentTransaction ft;
 
     public loginFragment() {
         // Required empty public constructor
@@ -46,6 +50,8 @@ public class loginFragment extends Fragment {
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        fm = getParentFragmentManager();
+        ft = fm .beginTransaction();
         initializeIds(view);
         getUserEmail();
         getUserPassword();
@@ -84,9 +90,9 @@ public class loginFragment extends Fragment {
         });
     }
     private void addFragment(Fragment fragment) {
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.fragments, fragment , "main Fragment")
-                .commit();
+        fm.popBackStack();
+        ft.add(R.id.fragments, fragment, "instagram");
+        ft.commit();
     }
     private void getUserPassword() {
         et_loginPassword.addTextChangedListener(new TextWatcher() {
