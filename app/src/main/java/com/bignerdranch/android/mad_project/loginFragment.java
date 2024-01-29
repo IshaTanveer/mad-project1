@@ -69,6 +69,8 @@ public class loginFragment extends Fragment {
                     Toast.makeText(getActivity(), "Enter Password", Toast.LENGTH_SHORT).show();
                 else if (userAccount.getEmail() != null && userAccount.getPassword() != null ) {
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+
                     mAuth.signInWithEmailAndPassword(userAccount.getEmail(), userAccount.getPassword())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -91,7 +93,7 @@ public class loginFragment extends Fragment {
     }
     private void addFragment(Fragment fragment) {
         fm.popBackStack();
-        ft.add(R.id.fragments, fragment, "instagram");
+        ft.replace(R.id.fragments, fragment, "instagram");
         ft.commit();
     }
     private void getUserPassword() {

@@ -61,11 +61,11 @@ public class settingsFragment extends Fragment {
                 int id = item.getItemId();
                 if (id == R.id.icon_notifications){
                     //replaceFragment(new settingsFragment());
-                    Toast.makeText(requireContext(), "notofications", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "notifications", Toast.LENGTH_SHORT).show();
                 }
                 else if (id == R.id.icon_account){
                     //replaceFragment(new settingsFragment());
-                    Toast.makeText(requireContext(), "notofications", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "notifications", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }

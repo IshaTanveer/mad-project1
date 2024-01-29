@@ -23,19 +23,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class createAccountFragment extends Fragment {
 
-    private TextInputEditText et_signupName, et_signupEmail, et_signupDob, et_signupPassword;
+    private TextInputEditText et_signupUserName, et_signupEmail, et_signupDob, et_signupPassword;
     private AppCompatButton btn_signup;
     private UserAccount userAccount = new UserAccount();
     private int year, month, day;
     private DatePickerDialog.OnDateSetListener listener;
-    private DatabaseReference usersDbRef;
+    private DatabaseReference reference;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -137,9 +140,31 @@ public class createAccountFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Account created.", Toast.LENGTH_SHORT).show();
-                            Fragment loginFragment = new loginFragment();
-                           addFragment(loginFragment);
+
+
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            String userid = firebaseUser.getUid();
+                            reference = FirebaseDatabase.getInstance().getReference().child("users")
+                                    .child(userid);
+
+                            String username = userAccount.getName();
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("id" ,userid);
+                            hashMap.put("username" ,username.toLowerCase());
+                            hashMap.put("fullName" ," ");
+                            hashMap.put("bio" ," ");
+                            hashMap.put("imageUrl" ,"https://firebasestorage.googleapis.com/v0/b/mad-project-7ed3f.appspot.com/o/Default_pfp.jpg?alt=media&token=ef6bc5f2-6a80-4487-a496-15b8fc7003bd ");
+                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(getActivity(), "Account created.", Toast.LENGTH_SHORT).show();
+                                        Fragment loginFragment = new loginFragment();
+                                        addFragment(loginFragment);
+                                    }
+                                }
+                            });
                         }
                         else {
                             Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -165,14 +190,14 @@ public class createAccountFragment extends Fragment {
     }
 
     private void getUserName() {
-        et_signupName.addTextChangedListener(new TextWatcher() {
+        et_signupUserName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                userAccount.setName(Objects.requireNonNull(et_signupName.getText()).toString().trim());
+                userAccount.setName(Objects.requireNonNull(et_signupUserName.getText()).toString().trim());
 
             }
 
@@ -185,7 +210,7 @@ public class createAccountFragment extends Fragment {
 
 
     private void initializeIds(View view) {
-        et_signupName = view.findViewById(R.id.et_signupName);
+        et_signupUserName = view.findViewById(R.id.et_signupName);
         et_signupEmail = view.findViewById(R.id.et_signupEmail);
         et_signupDob = view.findViewById(R.id.et_signupDob);
         et_signupPassword = view.findViewById(R.id.et_signupPassword);
