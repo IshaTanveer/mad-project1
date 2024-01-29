@@ -7,6 +7,6 @@
             android:icon="@drawable/notifications"/>
         <item android:title="Account"
             android:id="@+id/icon_account"
-            android:icon="@drawable/profile"/>
+            android:icon="@drawable/profile1"/>
     </group>
 </menu>
