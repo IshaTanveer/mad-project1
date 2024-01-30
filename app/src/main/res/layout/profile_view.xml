@@ -71,10 +71,15 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="150dp"
         android:id="@+id/btn_editProfile"
         android:background="@drawable/simple_button"
         android:text="@string/edit_profile"
         android:textSize="10sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="210dp"
+        android:background="@color/grey" />
 
 </RelativeLayout>

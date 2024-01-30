@@ -32,7 +32,6 @@ public class searchFragment extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
         rvSearchUser.setLayoutManager(new LinearLayoutManager(getContext()));
-
         svSearchUser.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -29,4 +29,9 @@
 
     <include
         layout="@layout/profile_view"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rv_profilePost"
+        android:layout_margin="20dp"/>
     </com.google.android.material.appbar.AppBarLayout>

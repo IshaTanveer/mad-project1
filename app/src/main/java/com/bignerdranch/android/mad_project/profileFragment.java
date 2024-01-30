@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -51,6 +54,9 @@ public class profileFragment extends Fragment {
     private AppCompatButton btn_editProfile;
     private Bundle bundle;
     Task<DataSnapshot> dbRef;
+    RecyclerView rv_profilePost;
+    private DatabaseReference databaseReference;
+    profilePostRVAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +70,21 @@ public class profileFragment extends Fragment {
         editProfile();
         addDialogBox();
         getDataFromSharedPref();
+        getPost();
+    }
+
+    private void getPost() {
+        rv_profilePost.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        Query query = FirebaseDatabase.getInstance()
+                .getReference("posts");
+
+        FirebaseRecyclerOptions<Post> options =
+                new FirebaseRecyclerOptions.Builder<Post>()
+                        .setQuery(query, Post.class)
+                        .build();
+
+        adapter =new profilePostRVAdapter(options, requireContext());
+        rv_profilePost.setAdapter(adapter);
     }
 
     private void getDataFromSharedPref() {
@@ -150,10 +171,23 @@ public class profileFragment extends Fragment {
         ci_ProfilePhoto = view.findViewById(R.id.ci_ProfilePhoto);
         tv_bio = view.findViewById(R.id.tv_bio);
         btn_editProfile = view.findViewById(R.id.btn_editProfile);
+        rv_profilePost = view.findViewById(R.id.rv_profilePost);
     }
     @Override
     public void onResume() {
         super.onResume();
         getDataFromSharedPref(); // Reload data from SharedPreferences
+    }
+    public void onStart() {
+        super.onStart();
+        if (adapter != null) {
+            adapter.startListening();
+        }
+    }
+    public void onStop() {
+        super.onStop();
+        if (adapter != null) {
+            adapter.stopListening();
+        }
     }
 }
