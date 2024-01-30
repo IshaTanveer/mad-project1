@@ -104,4 +104,9 @@ public class mainFragment extends Fragment {
                 .replace(R.id.userFragments, fragment , "create Account")
                 .commit();
     }
+    private void replace(Fragment fragment) {
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragments, fragment , "create Account")
+                .commit();
+    }
 }
