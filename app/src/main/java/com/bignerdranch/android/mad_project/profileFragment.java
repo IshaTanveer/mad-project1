@@ -48,11 +48,9 @@ public class profileFragment extends Fragment {
     private BottomSheetDialog bottomSheetDialog;
     private TextView tv_profileUsername, tv_profileFullName, tv_bio;
     private CircleImageView ci_ProfilePhoto;
-    private FirebaseUser firebaseuser;
     private AppCompatButton btn_editProfile;
     private Bundle bundle;
     Task<DataSnapshot> dbRef;
-    private HashMap<String, String> retrievedHashMap;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,7 +61,6 @@ public class profileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
-        //getUserProfileData();
         editProfile();
         addDialogBox();
         getDataFromSharedPref();
@@ -99,27 +96,6 @@ public class profileFragment extends Fragment {
                 .load(imageUrl)
                 .into(ci_ProfilePhoto); // Target CircleImageView
     }
-   /* private void getUserProfileData() {
-        firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseuser != null) {
-            String userId = firebaseuser.getUid();
-            dbRef = FirebaseDatabase.getInstance().getReference().child("users")
-                    .child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if(task.isSuccessful()){
-                        DataSnapshot dataSnapshot = task.getResult();
-                        String name = dataSnapshot.child("username").getValue(String.class);
-                        String fullName = dataSnapshot.child("fullName").getValue(String.class);
-                        String bio = dataSnapshot.child("bio").getValue(String.class);
-                        String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                        //setUserProfileData(name, fullName, bio, imageUrl);
-                        //putDataInBundle(name, fullName, bio, imageUrl);
-                    }
-                }
-            });
-        }
-    } */
 
     private void putDataInBundle(String name,String fullName, String bio, String imageUrl) {
         bundle = new Bundle();

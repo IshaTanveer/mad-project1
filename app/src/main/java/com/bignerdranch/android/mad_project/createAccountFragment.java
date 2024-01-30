@@ -1,10 +1,7 @@
 package com.bignerdranch.android.mad_project;
-import static android.app.ProgressDialog.show;
 
 import android.app.DatePickerDialog;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,9 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
-import java.net.URL;
-import java.net.MalformedURLException;
-
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -157,14 +150,6 @@ public class createAccountFragment extends Fragment {
                             hashMap.put("fullName" ," ");
                             hashMap.put("bio" ," ");
                             hashMap.put("imageUrl" ,"https://firebasestorage.googleapis.com/v0/b/mad-project-7ed3f.appspot.com/o/Default_pfp.jpg?alt=media&token=ef6bc5f2-6a80-4487-a496-15b8fc7003bd ");
-                            URL url = null;
-                            try {
-                                url = new URL("https://firebasestorage.googleapis.com/v0/b/mad-project-7ed3f.appspot.com/o/Default_pfp.jpg?alt=media&token=ef6bc5f2-6a80-4487-a496-15b8fc7003bd ");
-                            } catch (MalformedURLException e) {
-                                throw new RuntimeException(e);
-                            }
-                            String urlString = url.toString();
-                            putDataInsharedPrefernces(username, urlString);
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -182,24 +167,12 @@ public class createAccountFragment extends Fragment {
                     }
                 });
     }
-
-    private void putDataInsharedPrefernces(String username, String urlString) {
-        //SharedPreferences sharedPref = requireActivity().getPreferences(requireContext().MODE_PRIVATE);
-        SharedPreferences sharedPref = requireContext().getSharedPreferences("myPrefs", requireContext().MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("username", username);
-        editor.putString("fullName", " ");
-        editor.putString("bio", " ");
-        editor.putString("imageURL", urlString);
-        editor.apply();
-    }
     private void addFragment(Fragment fragment) {
         getParentFragmentManager().popBackStack("createAccount", 0);
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragments, fragment , "create Account")
                 .commit();
     }
-
     public static boolean isValidEmail(CharSequence target) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +

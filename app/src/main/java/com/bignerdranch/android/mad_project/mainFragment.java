@@ -1,5 +1,6 @@
 package com.bignerdranch.android.mad_project;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,12 +13,20 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class mainFragment extends Fragment {
     private BottomNavigationView bnView;
+    Task<DataSnapshot> dbRef;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +58,41 @@ public class mainFragment extends Fragment {
                 return true;
             }
         });
+        getUserProfileData();
 
+    }
+    private void getUserProfileData() {
+        FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseuser != null) {
+            String userId = firebaseuser.getUid();
+            dbRef = FirebaseDatabase.getInstance().getReference().child("users")
+                    .child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(requireContext(), "yeehaww", Toast.LENGTH_SHORT).show();
+                        DataSnapshot dataSnapshot = task.getResult();
+                        String name = dataSnapshot.child("username").getValue(String.class);
+                        String fullName = dataSnapshot.child("fullName").getValue(String.class);
+                        String bio = dataSnapshot.child("bio").getValue(String.class);
+                        String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
+                        putDataInsharedPrefernces(name, fullName, bio, imageUrl);
+                    }
+                    else{
+                        Toast.makeText(requireContext(), ":(", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+    private void putDataInsharedPrefernces(String username, String fullName, String bio, String imageUrl) {
+        SharedPreferences sharedPref = requireContext().getSharedPreferences("myPrefs", requireContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("username", username);
+        editor.putString("fullName", fullName);
+        editor.putString("bio", bio);
+        editor.putString("imageURL", imageUrl);
+        editor.apply();
     }
     private void addFragment(Fragment fragment) {
         getParentFragmentManager().beginTransaction()

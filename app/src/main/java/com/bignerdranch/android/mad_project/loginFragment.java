@@ -2,6 +2,7 @@ package com.bignerdranch.android.mad_project;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -35,7 +41,8 @@ public class loginFragment extends Fragment {
     private UserAccount userAccount = new UserAccount();
     private FragmentManager fm;
     private FragmentTransaction ft;
-
+    Task<DataSnapshot> dbRef;
+    String name, imageUrl;
     public loginFragment() {
         // Required empty public constructor
     }
@@ -77,7 +84,6 @@ public class loginFragment extends Fragment {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
-
                                         Toast.makeText(getActivity(), "logged in", Toast.LENGTH_SHORT).show();
                                         Fragment mainFragment = new mainFragment();
                                         addFragment(mainFragment);
@@ -92,6 +98,7 @@ public class loginFragment extends Fragment {
 
         });
     }
+
     private void addFragment(Fragment fragment) {
         fm.popBackStack();
         ft.replace(R.id.fragments, fragment, "instagram");
