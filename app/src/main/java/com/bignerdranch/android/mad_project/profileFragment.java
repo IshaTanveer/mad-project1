@@ -1,5 +1,7 @@
 package com.bignerdranch.android.mad_project;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -22,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.reflect.TypeToken;
 import com.google.firebase.FirebaseAppLifecycleListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+
+import java.lang.reflect.Type;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,6 +52,7 @@ public class profileFragment extends Fragment {
     private AppCompatButton btn_editProfile;
     private Bundle bundle;
     Task<DataSnapshot> dbRef;
+    private HashMap<String, String> retrievedHashMap;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,9 +63,21 @@ public class profileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
-        getUserProfileData();
+        //getUserProfileData();
         editProfile();
         addDialogBox();
+        getDataFromSharedPref();
+    }
+
+    private void getDataFromSharedPref() {
+        SharedPreferences sharedPref = requireContext().getSharedPreferences("myPrefs", requireContext().MODE_PRIVATE);
+        String username = sharedPref.getString("username", "");
+        String fullName = sharedPref.getString("fullName", "");
+        String bio = sharedPref.getString("bio", "");
+        String imageURL = sharedPref.getString("imageURL", "");
+        //Toast.makeText(requireContext(), username, Toast.LENGTH_SHORT).show();
+        setUserProfileData(username, fullName, bio, imageURL);
+        putDataInBundle(username,fullName, bio, imageURL);
     }
 
     private void editProfile() {
@@ -71,15 +91,15 @@ public class profileFragment extends Fragment {
         });
     }
 
-    private void setUserProfileData(String name, String fullName, String bio, String imageUrl) {
+    private void setUserProfileData(String name,String fullName, String bio, String imageUrl) {
         tv_profileUsername.setText(name);
-        tv_bio.setText(bio);
         tv_profileFullName.setText(fullName);
+        tv_bio.setText(bio);
         Glide.with(requireContext())
                 .load(imageUrl)
                 .into(ci_ProfilePhoto); // Target CircleImageView
     }
-    private void getUserProfileData() {
+   /* private void getUserProfileData() {
         firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseuser != null) {
             String userId = firebaseuser.getUid();
@@ -93,15 +113,15 @@ public class profileFragment extends Fragment {
                         String fullName = dataSnapshot.child("fullName").getValue(String.class);
                         String bio = dataSnapshot.child("bio").getValue(String.class);
                         String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                        setUserProfileData(name, fullName, bio, imageUrl);
-                        putDataInBundle(name, fullName, bio, imageUrl);
+                        //setUserProfileData(name, fullName, bio, imageUrl);
+                        //putDataInBundle(name, fullName, bio, imageUrl);
                     }
                 }
             });
         }
-    }
+    } */
 
-    private void putDataInBundle(String name, String fullName, String bio, String imageUrl) {
+    private void putDataInBundle(String name,String fullName, String bio, String imageUrl) {
         bundle = new Bundle();
         bundle.putString("username", name);
         bundle.putString("fullName", fullName);
@@ -155,5 +175,9 @@ public class profileFragment extends Fragment {
         tv_bio = view.findViewById(R.id.tv_bio);
         btn_editProfile = view.findViewById(R.id.btn_editProfile);
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDataFromSharedPref(); // Reload data from SharedPreferences
+    }
 }

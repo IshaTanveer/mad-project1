@@ -64,6 +64,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="400dp"
             android:id="@+id/et_editBio"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="save"
+            android:layout_marginTop="450dp"
+            android:textSize="15sp"
+            android:id="@+id/btn_save"
+            android:background="@drawable/simple_button"/>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -77,6 +77,7 @@ public class loginFragment extends Fragment {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
+
                                         Toast.makeText(getActivity(), "logged in", Toast.LENGTH_SHORT).show();
                                         Fragment mainFragment = new mainFragment();
                                         addFragment(mainFragment);
