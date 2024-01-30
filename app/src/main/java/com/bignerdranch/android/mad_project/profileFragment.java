@@ -1,26 +1,49 @@
 package com.bignerdranch.android.mad_project;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseAppLifecycleListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class profileFragment extends Fragment {
     ImageView icon_menu;
     NavigationView navigationView;
-    View bottomSheetView;
-    BottomSheetDialog bottomSheetDialog;
+    private View bottomSheetView;
+    private BottomSheetDialog bottomSheetDialog;
+    private TextView tv_profileUsername, tv_profileFullName, tv_bio;
+    private CircleImageView ci_ProfilePhoto;
+    private FirebaseUser firebaseuser;
+    private AppCompatButton btn_editProfile;
+    Task<DataSnapshot> dbRef;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,11 +54,48 @@ public class profileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+        getUserProfileData();
+        editProfile();
         addDialogBox();
-
-
     }
 
+    private void editProfile() {
+        btn_editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void setUserProfileData(String name, String fullName, String bio, String imageUrl) {
+        tv_profileUsername.setText(name);
+        tv_bio.setText(bio);
+        tv_profileFullName.setText(fullName);
+        Glide.with(requireContext())
+                .load(imageUrl)
+                .into(ci_ProfilePhoto); // Target CircleImageView
+    }
+    private void getUserProfileData() {
+        firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseuser != null) {
+            String userId = firebaseuser.getUid();
+            dbRef = FirebaseDatabase.getInstance().getReference().child("users")
+                    .child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DataSnapshot dataSnapshot = task.getResult();
+                        String name = dataSnapshot.child("username").getValue(String.class);
+                        String fullName = dataSnapshot.child("fullName").getValue(String.class);
+                        String bio = dataSnapshot.child("bio").getValue(String.class);
+                        String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
+                        setUserProfileData(name, fullName, bio, imageUrl);
+                    }
+                }
+            });
+        }
+    }
     private void addDialogBox() {
         icon_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +136,11 @@ public class profileFragment extends Fragment {
     }
     private void findViews(View view) {
         icon_menu = view.findViewById(R.id.icon_menu);
+        tv_profileFullName = view.findViewById(R.id.tv_profileFullName);
+        tv_profileUsername = view.findViewById(R.id.tv_profileUsername);
+        ci_ProfilePhoto = view.findViewById(R.id.ci_ProfilePhoto);
+        tv_bio = view.findViewById(R.id.tv_bio);
+        btn_editProfile = view.findViewById(R.id.btn_editProfile);
     }
 
 }

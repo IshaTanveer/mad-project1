@@ -41,4 +41,10 @@
     <string name="close">close navigation drawer</string>
     <string name="notifications">Notifications</string>
     <string name="log_out">Log out</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="posts">posts</string>
+    <string name="followers">followers</string>
+    <string name="_0">0</string>
+    <string name="following">following</string>
+    <string name="username">userName</string>
 </resources>
