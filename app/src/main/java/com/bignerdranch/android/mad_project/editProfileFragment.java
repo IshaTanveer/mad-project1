@@ -1,13 +1,20 @@
 package com.bignerdranch.android.mad_project;
 
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +29,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,6 +45,9 @@ public class editProfileFragment extends Fragment {
     CircleImageView ci_editPicture;
     String username, fullName, bio, imageUrl;
     AppCompatButton btn_save;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri imageUri;
+    String photoUrl;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,8 +61,10 @@ public class editProfileFragment extends Fragment {
         findViews(view);
         getArgumentsFromProfileFrag();
         setTexts();
+        getImage();
         editProfile();
     }
+
     private void editProfile() {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,33 +72,42 @@ public class editProfileFragment extends Fragment {
                 String username = et_editUserName.getText().toString().trim();
                 String fullName = et_editFullName.getText().toString().trim();
                 String bio = et_editBio.getText().toString().trim();
-                updateDB(username, fullName, bio);
+                updateDB(username, fullName, bio, String.valueOf(imageUri));
             }
         });
     }
-    private void putDataInsharedPrefernces(String username, String fullName, String bio) {
+
+    private void getImage() {
+        ci_editPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+        });
+
+    }
+
+    private void putDataInsharedPrefernces(String username, String fullName, String bio, String photoUrl) {
         //SharedPreferences sharedPref = requireActivity().getPreferences(requireContext().MODE_PRIVATE);
         SharedPreferences sharedPref = requireContext().getSharedPreferences("myPrefs", requireContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("username", username);
         editor.putString("fullName", fullName);
         editor.putString("bio", bio);
-        URL url = null;
-        try {
-            url = new URL("https://firebasestorage.googleapis.com/v0/b/mad-project-7ed3f.appspot.com/o/Default_pfp.jpg?alt=media&token=ef6bc5f2-6a80-4487-a496-15b8fc7003bd ");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        editor.putString("imageURL", url.toString());
+        editor.putString("imageURL", photoUrl);
         editor.apply();
     }
-    private void updateDB(String username, String fullName, String bio) {
+    private void updateDB(String username, String fullName, String bio, String photoUrl) {
         FirebaseUser firebaseuser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseuser != null) {
             HashMap<String , Object> data = new HashMap<>();
             data.put("username", username);
             data.put("fullName", fullName);
             data.put("bio", bio);
+            data.put("imageUrl", photoUrl);
             String userId = firebaseuser.getUid();
             Task<Void> dbRef = FirebaseDatabase.getInstance().getReference().child("users")
                     .child(userId)
@@ -91,7 +116,7 @@ public class editProfileFragment extends Fragment {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show();
-                            putDataInsharedPrefernces(username, fullName, bio);
+                            putDataInsharedPrefernces(username, fullName, bio, photoUrl);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -128,4 +153,14 @@ public class editProfileFragment extends Fragment {
             imageUrl = bundle.getString("imageUrl");
         }
     }
+   @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+       super.onActivityResult(requestCode, resultCode, data);
+       if (requestCode == PICK_IMAGE_REQUEST && resultCode == requireActivity().RESULT_OK && data != null && data.getData() != null) {
+           imageUri = data.getData();
+           Glide.with(requireContext())
+                   .load(imageUri)
+                   .into(ci_editPicture);
+       }
+   }
 }

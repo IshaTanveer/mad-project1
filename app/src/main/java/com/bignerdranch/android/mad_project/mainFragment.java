@@ -70,7 +70,6 @@ public class mainFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful()){
-                        Toast.makeText(requireContext(), "yeehaww", Toast.LENGTH_SHORT).show();
                         DataSnapshot dataSnapshot = task.getResult();
                         String name = dataSnapshot.child("username").getValue(String.class);
                         String fullName = dataSnapshot.child("fullName").getValue(String.class);
