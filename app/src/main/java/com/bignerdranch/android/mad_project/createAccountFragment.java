@@ -3,6 +3,7 @@ import static android.app.ProgressDialog.show;
 
 import android.app.DatePickerDialog;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -155,6 +157,7 @@ public class createAccountFragment extends Fragment {
                             hashMap.put("fullName" ," ");
                             hashMap.put("bio" ," ");
                             hashMap.put("imageUrl" ,"https://firebasestorage.googleapis.com/v0/b/mad-project-7ed3f.appspot.com/o/Default_pfp.jpg?alt=media&token=ef6bc5f2-6a80-4487-a496-15b8fc7003bd ");
+                            //saveHashMapInSrdPref(hashMap);
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

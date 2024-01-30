@@ -47,4 +47,9 @@
     <string name="_0">0</string>
     <string name="following">following</string>
     <string name="username">userName</string>
+    <string name="edit_profile_">Edit profile</string>
+    <string name="edit_picture">Edit picture</string>
+    <string name="name_">Name</string>
+    <string name="Username">Username</string>
+    <string name="bio">Bio</string>
 </resources>

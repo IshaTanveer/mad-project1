@@ -43,6 +43,7 @@ public class profileFragment extends Fragment {
     private CircleImageView ci_ProfilePhoto;
     private FirebaseUser firebaseuser;
     private AppCompatButton btn_editProfile;
+    private Bundle bundle;
     Task<DataSnapshot> dbRef;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +64,9 @@ public class profileFragment extends Fragment {
         btn_editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Fragment fragment = new editProfileFragment();
+                fragment.setArguments(bundle);
+                replaceFragment(fragment);
             }
         });
     }
@@ -91,11 +94,21 @@ public class profileFragment extends Fragment {
                         String bio = dataSnapshot.child("bio").getValue(String.class);
                         String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
                         setUserProfileData(name, fullName, bio, imageUrl);
+                        putDataInBundle(name, fullName, bio, imageUrl);
                     }
                 }
             });
         }
     }
+
+    private void putDataInBundle(String name, String fullName, String bio, String imageUrl) {
+        bundle = new Bundle();
+        bundle.putString("username", name);
+        bundle.putString("fullName", fullName);
+        bundle.putString("bio", bio);
+        bundle.putString("imageUrl", imageUrl);
+    }
+
     private void addDialogBox() {
         icon_menu.setOnClickListener(new View.OnClickListener() {
             @Override
