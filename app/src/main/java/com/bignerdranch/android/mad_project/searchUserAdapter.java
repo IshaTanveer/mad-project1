@@ -1,5 +1,8 @@
 package com.bignerdranch.android.mad_project;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,20 +11,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-public class UserAdapter extends FirebaseRecyclerAdapter<User, UserAdapter.UserViewHolder> {
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    public UserAdapter(@NonNull FirebaseRecyclerOptions<User> options) {
+public class searchUserAdapter extends FirebaseRecyclerAdapter<User, searchUserAdapter.UserViewHolder> {
+    Context context;
+    public searchUserAdapter(@NonNull FirebaseRecyclerOptions<User> options, Context context) {
         super(options);
+        this.context= context;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
-        holder.bind(model);
+       // holder.bind(model);
+        String photo = model.getImageUrl();
+        Glide.with(context)
+               .load(photo)
+                .into(holder.civProfile);
+        holder.tvUsername.setText(model.getUsername());
+        holder.tvFullName.setText(model.getFullName());
     }
 
     @NonNull
@@ -34,16 +45,23 @@ public class UserAdapter extends FirebaseRecyclerAdapter<User, UserAdapter.UserV
     static class UserViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvUsername;
         private final TextView tvFullName;
+        private final CircleImageView civProfile;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvFullName = itemView.findViewById(R.id.tvFullName);
+            civProfile = itemView.findViewById(R.id.civProfile);
         }
 
         public void bind(User user) {
             tvUsername.setText(user.getUsername());
             tvFullName.setText(user.getFullName());
+            Glide.with(itemView.getContext())
+                    .load(user.getImageUrl())
+                    .into(civProfile);
+
+
         }
     }
 }

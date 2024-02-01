@@ -75,8 +75,13 @@ public class profileFragment extends Fragment {
 
     private void getPost() {
         rv_profilePost.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        Query query = FirebaseDatabase.getInstance()
-                .getReference("posts");
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String currentUserId = currentUser != null ? currentUser.getUid() : "";
+
+        Query query = FirebaseDatabase.getInstance().getReference("posts")
+                .orderByChild("userId")
+                .equalTo(currentUserId);
+
 
         FirebaseRecyclerOptions<Post> options =
                 new FirebaseRecyclerOptions.Builder<Post>()

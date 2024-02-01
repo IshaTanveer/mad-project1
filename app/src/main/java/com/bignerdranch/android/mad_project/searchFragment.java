@@ -17,7 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public class searchFragment extends Fragment {
 
-    private UserAdapter userAdapter;
+    private searchUserAdapter userAdapter;
     private RecyclerView rvSearchUser;
     private DatabaseReference databaseReference;
     private androidx.appcompat.widget.SearchView svSearchUser;
@@ -64,7 +64,7 @@ public class searchFragment extends Fragment {
                         .setQuery(databaseReference.orderByChild("username").startAt(query).endAt(query + "\uf8ff"), User.class)
                         .build();
 
-        userAdapter = new UserAdapter(options);
+        userAdapter = new searchUserAdapter(options, requireContext());
         rvSearchUser.setAdapter(userAdapter);
 
         userAdapter.startListening();
@@ -76,7 +76,7 @@ public class searchFragment extends Fragment {
                         .setQuery(databaseReference, User.class)
                         .build();
 
-        userAdapter = new UserAdapter(options);
+        userAdapter = new searchUserAdapter(options, requireContext());
         rvSearchUser.setAdapter(userAdapter);
 
         userAdapter.startListening();
