@@ -3,12 +3,15 @@ package com.bignerdranch.android.mad_project;
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,9 +22,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class searchUserAdapter extends FirebaseRecyclerAdapter<User, searchUserAdapter.UserViewHolder> {
     Context context;
-    public searchUserAdapter(@NonNull FirebaseRecyclerOptions<User> options, Context context) {
+    FragmentManager fragmentManager;
+    public searchUserAdapter(@NonNull FirebaseRecyclerOptions<User> options, Context context, FragmentManager fragmentManager) {
         super(options);
         this.context= context;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -33,6 +38,33 @@ public class searchUserAdapter extends FirebaseRecyclerAdapter<User, searchUserA
                 .into(holder.civProfile);
         holder.tvUsername.setText(model.getUsername());
         holder.tvFullName.setText(model.getFullName());
+        openOthersProfile(holder.itemView, model);
+    }
+
+    private void openOthersProfile(View itemView, User model) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                putDataInsharedPrefernces(model);
+                replaceFragment(new viewOthersProfileFragment());
+            }
+        });
+    }
+    private void putDataInsharedPrefernces(User model) {
+        SharedPreferences sharedPref = context.getSharedPreferences("othersPrefs", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("username", model.getUsername());
+        editor.putString("fullName", model.getFullName());
+        editor.putString("bio", model.getBio());
+        editor.putString("imageURL", model.getImageUrl());
+        editor.putString("id", model.getId());
+        editor.apply();
+    }
+    private void replaceFragment(Fragment fragment) {
+        fragmentManager.beginTransaction()
+                .replace(R.id.userFragments, fragment , "settings")
+                .addToBackStack(null)
+                .commit();
     }
 
     @NonNull

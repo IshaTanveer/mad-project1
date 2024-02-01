@@ -82,7 +82,6 @@ public class profileFragment extends Fragment {
                 .orderByChild("userId")
                 .equalTo(currentUserId);
 
-
         FirebaseRecyclerOptions<Post> options =
                 new FirebaseRecyclerOptions.Builder<Post>()
                         .setQuery(query, Post.class)

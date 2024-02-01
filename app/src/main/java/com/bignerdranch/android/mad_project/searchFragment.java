@@ -64,7 +64,7 @@ public class searchFragment extends Fragment {
                         .setQuery(databaseReference.orderByChild("username").startAt(query).endAt(query + "\uf8ff"), User.class)
                         .build();
 
-        userAdapter = new searchUserAdapter(options, requireContext());
+        userAdapter = new searchUserAdapter(options, requireContext(), getParentFragmentManager());
         rvSearchUser.setAdapter(userAdapter);
 
         userAdapter.startListening();
@@ -76,7 +76,7 @@ public class searchFragment extends Fragment {
                         .setQuery(databaseReference, User.class)
                         .build();
 
-        userAdapter = new searchUserAdapter(options, requireContext());
+        userAdapter = new searchUserAdapter(options, requireContext(), getParentFragmentManager());
         rvSearchUser.setAdapter(userAdapter);
 
         userAdapter.startListening();
