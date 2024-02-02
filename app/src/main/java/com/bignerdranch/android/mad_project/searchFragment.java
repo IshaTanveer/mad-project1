@@ -61,7 +61,8 @@ public class searchFragment extends Fragment {
     private void performSearch(String query) {
         FirebaseRecyclerOptions<User> options =
                 new FirebaseRecyclerOptions.Builder<User>()
-                        .setQuery(databaseReference.orderByChild("username").startAt(query).endAt(query + "\uf8ff"), User.class)
+                        .setQuery(databaseReference.orderByChild("username")
+                                .startAt(query).endAt(query + "\uf8ff"), User.class)
                         .build();
 
         userAdapter = new searchUserAdapter(options, requireContext(), getParentFragmentManager());

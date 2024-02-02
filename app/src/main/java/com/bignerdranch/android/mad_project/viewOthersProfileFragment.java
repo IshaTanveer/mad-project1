@@ -89,6 +89,7 @@ public class viewOthersProfileFragment extends Fragment {
         tv_othersFullName = view.findViewById(R.id.tv_othersFullName);
         tv_othersBio = view.findViewById(R.id.tv_othersBio);
         ci_othersProfilePhoto = view.findViewById(R.id.ci_othersProfilePhoto);
+        rv_othersPost = view.findViewById(R.id.rv_othersPost);
     }
     public void onStart() {
         super.onStart();
