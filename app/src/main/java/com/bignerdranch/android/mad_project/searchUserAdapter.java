@@ -17,24 +17,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class searchUserAdapter extends FirebaseRecyclerAdapter<User, searchUserAdapter.UserViewHolder> {
     Context context;
     FragmentManager fragmentManager;
+
     public searchUserAdapter(@NonNull FirebaseRecyclerOptions<User> options, Context context, FragmentManager fragmentManager) {
         super(options);
-        this.context= context;
+        this.context = context;
         this.fragmentManager = fragmentManager;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
-       // holder.bind(model);
         String photo = model.getImageUrl();
         Glide.with(context)
-               .load(photo)
+                .load(photo)
                 .into(holder.civProfile);
         holder.tvUsername.setText(model.getUsername());
         holder.tvFullName.setText(model.getFullName());
@@ -45,12 +53,13 @@ public class searchUserAdapter extends FirebaseRecyclerAdapter<User, searchUserA
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                putDataInsharedPrefernces(model);
+                putDataInSharedPreferences(model);
                 replaceFragment(new viewOthersProfileFragment());
             }
         });
     }
-    private void putDataInsharedPrefernces(User model) {
+
+    private void putDataInSharedPreferences(User model) {
         SharedPreferences sharedPref = context.getSharedPreferences("othersPrefs", context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("username", model.getUsername());
@@ -60,9 +69,10 @@ public class searchUserAdapter extends FirebaseRecyclerAdapter<User, searchUserA
         editor.putString("id", model.getId());
         editor.apply();
     }
+
     private void replaceFragment(Fragment fragment) {
         fragmentManager.beginTransaction()
-                .replace(R.id.userFragments, fragment , "settings")
+                .replace(R.id.userFragments, fragment, "settings")
                 .addToBackStack(null)
                 .commit();
     }
@@ -84,16 +94,6 @@ public class searchUserAdapter extends FirebaseRecyclerAdapter<User, searchUserA
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvFullName = itemView.findViewById(R.id.tvFullName);
             civProfile = itemView.findViewById(R.id.civProfile);
-        }
-
-        public void bind(User user) {
-            tvUsername.setText(user.getUsername());
-            tvFullName.setText(user.getFullName());
-            Glide.with(itemView.getContext())
-                    .load(user.getImageUrl())
-                    .into(civProfile);
-
-
         }
     }
 }

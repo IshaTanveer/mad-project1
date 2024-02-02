@@ -51,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerInside"
+            android:src="@drawable/default_post"
             android:id="@+id/iv_addPost"
             android:layout_gravity="center"
            />
