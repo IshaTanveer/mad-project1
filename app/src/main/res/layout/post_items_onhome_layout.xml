@@ -30,7 +30,8 @@
     <ImageView
         android:id="@+id/ivPostImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="340dp"
+        android:src="@drawable/default_post"
         android:layout_below="@id/civUserProfile"
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
@@ -42,9 +43,10 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_below="@id/ivPostImage"
+        android:src="@drawable/like_post"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentStart="true"/>
 
 
     <ImageView
@@ -52,9 +54,19 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_below="@id/ivPostImage"
+        android:src="@drawable/add_comment"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_toStartOf="@id/ivLike"/>
+        android:layout_toEndOf="@id/ivLike"/>
 
 
+    <ImageView
+        android:id="@+id/ivBookmark"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_below="@id/ivPostImage"
+        android:src="@drawable/bookmark"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>
